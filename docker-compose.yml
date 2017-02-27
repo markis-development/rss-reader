@@ -1,0 +1,36 @@
+version: '2'
+
+services:
+    parser:
+        image: golang:1.8.0
+        volumes:
+            - ./parser:/go/src/app
+        working_dir: /go/src/app
+        command: go run app.go
+
+    reader_api:
+        image: microsoft/dotnet
+        volumes:
+            - ./reader_api:/app
+        working_dir: /app
+        command: bash -c "dotnet restore; dotnet run"
+        ports:
+            - 5000:5000
+
+    redis:
+        image: redis:3.2.8
+        expose:
+            - 6379
+
+    db:
+        image: mysql:5.7.17
+        env_file:
+            - .env
+        environment:
+            TZ: ${TZ}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        expose:
+            - 3306
