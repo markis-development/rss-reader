@@ -57,15 +57,16 @@ func GetRSS(urls []string) []RSSItem {
 
 	channelRSSItems := make(chan []RSSItem)
 
+	counter := 0
 	for _, url := range urls {
 		go getSingleRss(url, channelRSSItems)
+		counter++
 	}
 
-	for _, url := range urls {
+	for i := 0; i < counter; i++ {
 		items := <-channelRSSItems
 		for _, item := range items {
-			rssItem := RSSItem{url, item.Title, item.Link, item.Summary}
-			rssItems = append(rssItems, rssItem)
+			rssItems = append(rssItems, item)
 		}
 	}
 
