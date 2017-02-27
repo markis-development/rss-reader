@@ -6,7 +6,9 @@ services:
         volumes:
             - ./parser:/go/src/app
         working_dir: /go/src/app
-        command: go run app.go
+        command: bash -c "go get; go run app.go"
+        env_file:
+            - .env
 
     reader_api:
         image: microsoft/dotnet
