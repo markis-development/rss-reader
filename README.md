@@ -2,11 +2,9 @@ RSS Reader
 ---
 
 1. Git setup:
-    * `do a fork`
-    * `git clone git@github.com:<yourlogin>/rss-reader.git`
+    * `git clone git@github.com:markis-development/rss-reader.git`
     * `cd rss-reader`
-    * `git remote rename origin <yourlogin>`
-    * `git remote add github git@github.com:markis-development/rss-reader.git`
+    * `git remote rename origin github`
     * `git checkout develop`
 
 2. Git workflow:
