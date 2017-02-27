@@ -10,7 +10,7 @@ RSS Reader
 2. Git workflow:
     * `git add .`
     * `git commit -m "message"`
-    * `git push <yourlogin> <yourbranch>`
+    * `git push github <yourbranch>`
 
 3. Docker:
     * Installation of docker engine: https://docs.docker.com/engine/installation/
