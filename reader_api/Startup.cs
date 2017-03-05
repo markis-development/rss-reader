@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using EFGetStarted.AspNetCore.NewDb.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace app
 {
@@ -29,6 +27,12 @@ namespace app
         {
             // Add framework services.
             services.AddMvc();
+            
+            var connection = @"Server=db:3306;Database=db;Uid=root;Pwd=dbroot;";
+            
+            services.AddDbContext<BloggingContext>(options => options.UseSqlServer(connection));
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,6 +42,12 @@ namespace app
             loggerFactory.AddDebug();
 
             app.UseMvc();
+
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                // var context = serviceScope.ServiceProvider.GetService<BloggingContext>();
+                // context.Database.Migrate();
+            }
         }
     }
 }

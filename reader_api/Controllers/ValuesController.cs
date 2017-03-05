@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EFGetStarted.AspNetCore.NewDb.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace app.Controllers
@@ -9,11 +10,16 @@ namespace app.Controllers
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
+        private readonly BloggingContext _db;
+        public ValuesController(BloggingContext db)
+        {
+            _db = db;
+        }
         // GET api/values
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new string[] { "value1", "value2" };
+            return _db.Blogs.Select(n=>n.Url).AsEnumerable();
         }
 
         // GET api/values/5

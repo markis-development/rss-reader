@@ -1,28 +1,28 @@
 version: '2'
 
 services:
-    parser:
-        image: golang:1.8.0
-        volumes:
-            - ./parser:/go/src/app
-        working_dir: /go/src/app
-        command: bash -c "go get; go run app.go"
-        env_file:
-            - .env
+    # parser:
+    #     image: golang:1.8.0
+    #     volumes:
+    #         - ./parser:/go/src/app
+    #     working_dir: /go/src/app
+    #     command: bash -c "go get; go run app.go"
+    #     env_file:
+    #         - .env
 
     reader_api:
-        image: microsoft/dotnet
+        image: microsoft/dotnet:1.0.0-preview2-sdk
         volumes:
             - ./reader_api:/app
         working_dir: /app
         command: bash -c "dotnet restore; dotnet run"
         ports:
-            - 5000:5000
+            - 4999:4999
 
-    redis:
-        image: redis:3.2.8
-        expose:
-            - 6379
+    # redis:
+    #     image: redis:3.2.8
+    #     expose:
+    #         - 6379
 
     db:
         image: mysql:5.7.17
@@ -36,3 +36,11 @@ services:
             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
         expose:
             - 3306
+
+    # db_Lepsze:
+    #     image: microsoft/mssql-server-linux
+    #     environment: 
+    #         ACCEPT_EULA=Y
+    #         SA_PASSWORD=ZAQ!2wsxCDE#4rfv
+    #     expose:
+    #         - 1433
