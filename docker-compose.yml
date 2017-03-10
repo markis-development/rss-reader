@@ -16,6 +16,11 @@ services:
             - ./reader_api:/app
         working_dir: /app
         command: bash -c "dotnet restore; dotnet run"
+        # te linijki nizej trzeba dodac do command jak zmieniasz cos w bazie :)
+        # pierwsze uruchomienie tez bylo by spoko to zrobic 
+        # ogolnie jesli do command dodac usuwanie zawartosci katalogu "Migrations" to wtedy te dwie comendy nizej mozna bez problemu odpalac zawsze
+        # bedzie dluzej trwalo stawianie wszystkiego ale bedzie dzialac xD
+        # dotnet ef migrations add JakasMigracjaNowa;dotnet ef database update;
         ports:
             - 4999:4999
 
@@ -24,8 +29,8 @@ services:
     #     expose:
     #         - 6379
 
-    db:
-        image: mysql:5.7.17
+    databaseServer:
+        image: mysql:8
         env_file:
             - .env
         environment:
@@ -37,10 +42,7 @@ services:
         expose:
             - 3306
 
-    # db_Lepsze:
-    #     image: microsoft/mssql-server-linux
-    #     environment: 
-    #         ACCEPT_EULA=Y
-    #         SA_PASSWORD=ZAQ!2wsxCDE#4rfv
-    #     expose:
-    #         - 1433
+# MYSQL_ROOT_PASSWORD=dbroot
+# MYSQL_DATABASE=db
+# MYSQL_USER=dbuser
+# MYSQL_PASSWORD=dbuser

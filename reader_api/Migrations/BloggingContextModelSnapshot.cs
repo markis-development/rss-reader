@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using EFGetStarted.AspNetCore.NewDb.Models;
 
-namespace reader_api.Migrations
+namespace app.Migrations
 {
     [DbContext(typeof(BloggingContext))]
     partial class BloggingContextModelSnapshot : ModelSnapshot
@@ -13,8 +13,7 @@ namespace reader_api.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.0.1")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "1.1.0-rtm-22752");
 
             modelBuilder.Entity("EFGetStarted.AspNetCore.NewDb.Models.Blog", b =>
                 {
@@ -25,7 +24,7 @@ namespace reader_api.Migrations
 
                     b.HasKey("BlogId");
 
-                    b.ToTable("Blogs");
+                    b.ToTable("Blog");
                 });
 
             modelBuilder.Entity("EFGetStarted.AspNetCore.NewDb.Models.Post", b =>
@@ -43,7 +42,7 @@ namespace reader_api.Migrations
 
                     b.HasIndex("BlogId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Post");
                 });
 
             modelBuilder.Entity("EFGetStarted.AspNetCore.NewDb.Models.Post", b =>

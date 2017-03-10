@@ -22,11 +22,13 @@ namespace app.Controllers
             return _db.Blogs.Select(n=>n.Url).AsEnumerable();
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        // GET api/values/COS
+        [HttpGet("{value}")]
+        public string Get(string value)
         {
-            return "value";
+            _db.Add(new Blog(){Url = value});
+            _db.SaveChanges();
+            return "Pomyslnie dodano: {"+value+"} do bazy :)";
         }
 
         // POST api/values

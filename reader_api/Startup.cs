@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using EFGetStarted.AspNetCore.NewDb.Models;
 using Microsoft.EntityFrameworkCore;
+using MySQL.Data.Entity.Extensions;
 
 namespace app
 {
@@ -28,11 +29,11 @@ namespace app
             // Add framework services.
             services.AddMvc();
             
-            var connection = @"Server=db:3306;Database=db;Uid=root;Pwd=dbroot;";
+            //var connection = @"Server=db:3306;Database=db;Uid=root;Pwd=dbroot;";
             
-            services.AddDbContext<BloggingContext>(options => options.UseSqlServer(connection));
-
-
+            //services.AddDbContext<BloggingContext>(options => options.UseSqlServer(connection));
+            services.AddDbContext<BloggingContext>(options => options.UseMySQL(Configuration.GetConnectionString("SqlConnection")));
+        
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,8 +46,8 @@ namespace app
 
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
-                // var context = serviceScope.ServiceProvider.GetService<BloggingContext>();
-                // context.Database.Migrate();
+                 var context = serviceScope.ServiceProvider.GetService<BloggingContext>();
+                 context.Database.Migrate();
             }
         }
     }
