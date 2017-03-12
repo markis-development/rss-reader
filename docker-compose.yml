@@ -10,6 +10,7 @@ services:
     #     env_file:
     #         - .env
 
+
     reader_api:
         image: microsoft/dotnet:1.0.0-preview2-sdk
         volumes:
@@ -41,6 +42,18 @@ services:
             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
         expose:
             - 3306
+
+    cron:
+        image: microsoft/dotnet:1.0.0-preview2-sdk
+        volumes:
+            - ./cron:/app
+        working_dir: /app
+        command: bash -c "dotnet restore;sleep 20; dotnet run"
+        links:
+            - "reader_api"
+        ports:
+            - 5001:5001
+
 
 # MYSQL_ROOT_PASSWORD=dbroot
 # MYSQL_DATABASE=db
