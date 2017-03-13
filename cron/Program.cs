@@ -17,7 +17,7 @@ namespace app
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
-                .UseUrls("http://*:4999")
+                .UseUrls("http://*:5001")
                 .Build();
 
             host.Run();

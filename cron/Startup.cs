@@ -3,9 +3,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using EFGetStarted.AspNetCore.NewDb.Models;
-using Microsoft.EntityFrameworkCore;
-using MySQL.Data.Entity.Extensions;
+using Chroniton;
+using Chroniton.Jobs;
+using Chroniton.Schedules;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace app
 {
@@ -32,7 +35,8 @@ namespace app
             //var connection = @"Server=db:3306;Database=db;Uid=root;Pwd=dbroot;";
             
             //services.AddDbContext<BloggingContext>(options => options.UseSqlServer(connection));
-            services.AddDbContext<BloggingContext>(options => options.UseMySQL(Configuration.GetConnectionString("SqlConnection")));
+            //services.AddDbContext<BloggingContext>(options => options.UseMySQL(Configuration.GetConnectionString("SqlConnection")));
+            services.AddSingleton<ISingularity, Singularity>(serviceProvider => Singularity.Instance);
         
         }
 
@@ -44,11 +48,15 @@ namespace app
 
             app.UseMvc();
 
-            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            {
-                 var context = serviceScope.ServiceProvider.GetService<BloggingContext>();
-                 context.Database.Migrate();
-            }
+            // using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            // {
+            //      var context = serviceScope.ServiceProvider.GetService<BloggingContext>();
+            //      context.Database.Migrate();
+            // }
+            var singularity = Singularity.Instance;
+            singularity.Start();
         }
+
+
     }
 }
