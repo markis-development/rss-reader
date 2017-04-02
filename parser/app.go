@@ -20,6 +20,17 @@ type RSSItem struct {
 }
 
 func main() {
+	http.HandleFunc("/", parseHandler)
+	http.ListenAndServe(":6578", nil)
+}
+
+func parseHandler(w http.ResponseWriter, r *http.Request) {
+	go Parse()
+	fmt.Fprintln(w, "Parsing started")
+}
+
+// Parse - run parsing
+func Parse() {
 	rssAggregator := os.Getenv("RSS_AGGREGATOR")
 
 	start := time.Now()

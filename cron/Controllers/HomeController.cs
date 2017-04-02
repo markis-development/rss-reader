@@ -39,7 +39,7 @@ namespace Cron.Controllers
         {
 
 
-            var job = new SimpleParameterizedJob<string>((parameter, scheduledTime) => 
+            var job = new SimpleParameterizedJob<string>((parameter, scheduledTime) =>
                 odpytajServerGET()
                 );
 
@@ -56,8 +56,8 @@ namespace Cron.Controllers
         {
             using(var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("http://reader_api:4999");
-                var response = await client.GetAsync("/api/values");
+                client.BaseAddress = new Uri("http://parser:6578");
+                var response = await client.GetAsync("/");
                 response.EnsureSuccessStatusCode(); // Throw in not success
 
                 var stringResponse = await response.Content.ReadAsStringAsync();

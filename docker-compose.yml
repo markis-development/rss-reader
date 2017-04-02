@@ -1,61 +1,46 @@
 version: '2'
 
 services:
-    # parser:
-    #     image: golang:1.8.0
-    #     volumes:
-    #         - ./parser:/go/src/app
-    #     working_dir: /go/src/app
-    #     command: bash -c "go get; go run app.go"
-    #     env_file:
-    #         - .env
-
-
-    reader_api:
-        image: microsoft/dotnet:1.0.0-preview2-sdk
+    parser:
+        image: golang:1.8.0
         volumes:
-            - ./reader_api:/app
-        working_dir: /app
-        command: bash -c "dotnet restore; dotnet run"
-        # te linijki nizej trzeba dodac do command jak zmieniasz cos w bazie :)
-        # pierwsze uruchomienie tez bylo by spoko to zrobic 
-        # ogolnie jesli do command dodac usuwanie zawartosci katalogu "Migrations" to wtedy te dwie comendy nizej mozna bez problemu odpalac zawsze
-        # bedzie dluzej trwalo stawianie wszystkiego ale bedzie dzialac xD
-        # dotnet ef migrations add JakasMigracjaNowa;dotnet ef database update;
+            - ./parser:/go/src/app
+        working_dir: /go/src/app
+        command: bash -c "go get; go run app.go"
         ports:
-            - 4999:4999
-
-    # redis:
-    #     image: redis:3.2.8
-    #     expose:
-    #         - 6379
-
-    databaseServer:
-        image: mysql:8
+            - 6578:6578
         env_file:
             - .env
-        environment:
-            TZ: ${TZ}
-            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-            MYSQL_DATABASE: ${MYSQL_DATABASE}
-            MYSQL_USER: ${MYSQL_USER}
-            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-        expose:
-            - 3306
+
+    # reader_api:
+    #     image: microsoft/dotnet:1.0.0-preview2-sdk
+    #     volumes:
+    #         - ./reader_api:/app
+    #     working_dir: /app
+    #     command: bash -c "./startup.sh"
+    #     ports:
+    #         - 4999:4999
+
+    # databaseServer:
+    #     image: mysql:8
+    #     env_file:
+    #         - .env
+    #     environment:
+    #         TZ: ${TZ}
+    #         MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    #         MYSQL_DATABASE: ${MYSQL_DATABASE}
+    #         MYSQL_USER: ${MYSQL_USER}
+    #         MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    #     expose:
+    #         - 3306
 
     cron:
         image: microsoft/dotnet:1.0.0-preview2-sdk
         volumes:
             - ./cron:/app
         working_dir: /app
-        command: bash -c "dotnet restore;sleep 20; dotnet run"
+        command: bash -c "dotnet restore; dotnet run"
         links:
-            - "reader_api"
+            - parser
         ports:
             - 5001:5001
-
-
-# MYSQL_ROOT_PASSWORD=dbroot
-# MYSQL_DATABASE=db
-# MYSQL_USER=dbuser
-# MYSQL_PASSWORD=dbuser
