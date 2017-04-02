@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  rss_dotnet_api:
+    image: rss_dotnet_api
+    build:
+      context: ./rss_dotnet_api
+      dockerfile: Dockerfile
+    depends_on:
+      - databaseServer
+
+  databaseServer:
+    image: mysql:8
+    environment:
+      TZ: Europe/Warsaw
+      MYSQL_ROOT_PASSWORD: dbroot
+      MYSQL_DATABASE: db
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: dbuser
+    expose:
+      - 3306

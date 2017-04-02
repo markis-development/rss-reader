@@ -10,38 +10,28 @@ services:
     #     env_file:
     #         - .env
 
+  reader_api:
+    image: microsoft/dotnet:latest
+    volumes:
+      - ./dotnet_api:/app
+    working_dir: /app
+    command: bash -c "dotnet rss_dotnet_api.dll"
+    depends_on:
+      - databaseServer
+    ports:
+      - 5000:5000
 
-    reader_api:
-        image: microsoft/dotnet:1.0.0-preview2-sdk
-        volumes:
-            - ./reader_api:/app
-        working_dir: /app
-        command: bash -c "dotnet restore; dotnet run"
-        # te linijki nizej trzeba dodac do command jak zmieniasz cos w bazie :)
-        # pierwsze uruchomienie tez bylo by spoko to zrobic 
-        # ogolnie jesli do command dodac usuwanie zawartosci katalogu "Migrations" to wtedy te dwie comendy nizej mozna bez problemu odpalac zawsze
-        # bedzie dluzej trwalo stawianie wszystkiego ale bedzie dzialac xD
-        # dotnet ef migrations add JakasMigracjaNowa;dotnet ef database update;
-        ports:
-            - 4999:4999
 
-    # redis:
-    #     image: redis:3.2.8
-    #     expose:
-    #         - 6379
-
-    databaseServer:
-        image: mysql:8
-        env_file:
-            - .env
-        environment:
-            TZ: ${TZ}
-            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-            MYSQL_DATABASE: ${MYSQL_DATABASE}
-            MYSQL_USER: ${MYSQL_USER}
-            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-        expose:
-            - 3306
+  databaseServer:
+    image: mysql:8
+    environment:
+      TZ: Europe/Warsaw
+      MYSQL_ROOT_PASSWORD: dbroot
+      MYSQL_DATABASE: db
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: dbuser
+    expose:
+      - 3306
 
     cron:
         image: microsoft/dotnet:1.0.0-preview2-sdk
@@ -53,9 +43,3 @@ services:
             - "reader_api"
         ports:
             - 5001:5001
-
-
-# MYSQL_ROOT_PASSWORD=dbroot
-# MYSQL_DATABASE=db
-# MYSQL_USER=dbuser
-# MYSQL_PASSWORD=dbuser
