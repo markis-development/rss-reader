@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>239915d8-4735-4583-afea-ea53bf31927a</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DockerLaunchBrowser>true</DockerLaunchBrowser>
+  </PropertyGroup>
+</Project>
