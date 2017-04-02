@@ -1,16 +1,16 @@
 version: '2'
 
 services:
-    parser:
-        image: golang:1.8.0
-        volumes:
-            - ./parser:/go/src/app
-        working_dir: /go/src/app
-        command: bash -c "go get; go run app.go"
-        ports:
-            - 6578:6578
-        env_file:
-            - .env
+  parser:
+    image: golang:1.8.0
+    volumes:
+      - ./parser:/go/src/app
+    working_dir: /go/src/app
+    command: bash -c "go get; go run app.go"
+    ports:
+      - 6578:6578
+    env_file:
+      - .env
 
   reader_api:
     image: microsoft/dotnet:latest
@@ -38,10 +38,10 @@ services:
   cron:
     image: microsoft/dotnet:1.0.0-preview2-sdk
     volumes:
-        - ./cron:/app
+      - ./cron:/app
     working_dir: /app
     command: bash -c "dotnet restore; dotnet run"
     links:
-        - parser
+      - parser
     ports:
-        - 5001:5001
+      - 5001:5001
