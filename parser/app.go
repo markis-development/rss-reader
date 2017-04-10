@@ -9,6 +9,7 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/SlyMarbo/rss"
+	"github.com/parnurzeal/gorequest"
 )
 
 // RSSItem - rss item
@@ -17,6 +18,7 @@ type RSSItem struct {
 	Title    string
 	Link     string
 	Summary  string
+	PubDate  string
 }
 
 func main() {
@@ -56,10 +58,26 @@ func GetLinks(rssAggregator string) []string {
 		url, exists := s.Find("a").Attr("href")
 		if exists && len(url) > 0 {
 			urls = append(urls, url)
+			SaveChannel(url)
 		}
 	})
 
 	return urls
+}
+
+// SaveChannel - save channel
+func SaveChannel(link string) {
+	name := link
+	description := ""
+
+	url := fmt.Sprintf("http://reader_api:5000/pushrss?link=%s&name=%s&description=%s", link, name, description)
+	gorequest.New().Post(url).End()
+}
+
+// SaveRSS - save rss
+func SaveRSS(item RSSItem) {
+	url := fmt.Sprintf("http://reader_api:500/pushrss?channelLink=%s&link=%s&name=%s&description=%s&pubDate=%s", item.Link, item.Title, item.Summary, item.Category, item.PubDate)
+	gorequest.New().Put(url).End()
 }
 
 // GetRSS - fetch rss
@@ -107,7 +125,8 @@ func getSingleRss(url string, channelRSSItems chan []RSSItem) {
 	}
 
 	for _, item := range feed.Items {
-		rssItem := RSSItem{url, item.Title, item.Link, item.Summary}
+		rssItem := RSSItem{url, item.Title, item.Link, item.Summary, item.Date.Format(time.UnixDate)}
+		SaveRSS(rssItem)
 		rssItems = append(rssItems, rssItem)
 	}
 

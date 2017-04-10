@@ -11,6 +11,8 @@ services:
       - 6578:6578
     env_file:
       - .env
+    depends_on:
+      - reader_api
 
   reader_api:
     image: microsoft/dotnet:latest
